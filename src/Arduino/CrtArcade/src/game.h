@@ -55,26 +55,26 @@ const float EXPLOSION_SECONDS = 0.25;
 const uint EXPLOSION_TIME = EXPLOSION_SECONDS * 60;
 
 struct Alien {
-  int x;
-  int y;
-  int sprite_index;
-  bool exists;
-  uint points;
+    int x;
+    int y;
+    int sprite_index;
+    bool exists;
+    uint points;
 };
 
 struct AlienMissile {
-  int x;
-  int y;
-  int sprite_index;
-  bool exists;
-  uint points;
+    int x;
+    int y;
+    int sprite_index;
+    bool exists;
+    uint points;
 };
 
 struct Shield {
-  int x;
-  int y;
-  byte sprite[SHIELD_ARRAY_SIZE];
-  bool exists;
+    int x;
+    int y;
+    byte sprite[SHIELD_ARRAY_SIZE];
+    bool exists;
 };
 
 typedef void (*UpdateFunction)();

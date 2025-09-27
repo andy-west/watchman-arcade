@@ -63,7 +63,7 @@ void setup_game() {
 void setup_level() {
     player_x = PLAYER_BOUNDARY_SIDE;
     level_display_countdown = LEVEL_DISPLAY_TIME;
-    alien_animation_countdown = ALIEN_ANIMATION_TIME;
+    alien_animation_countdown = get_alien_animation_time();
     alien_animation_frame = 0;
     alien_direction = ALIEN_DIRECTION_RIGHT;
     is_game_ending = false;
@@ -197,10 +197,33 @@ void update_aliens() {
     alien_animation_countdown--;
 
     if (alien_animation_countdown <= 0) {
-        alien_animation_countdown += ALIEN_ANIMATION_TIME;
+        alien_animation_countdown += get_alien_animation_time();
         alien_animation_frame = 1 - alien_animation_frame;
         move_aliens();
     }
+}
+
+uint get_alien_animation_time() {
+    uint remaining = get_remaining_alien_count();
+    uint time = (ALIEN_ANIMATION_TIME * remaining) / ALIEN_COUNT;
+
+    if (time < 1) {
+        time = 1;
+    }
+
+    return time;
+}
+
+uint get_remaining_alien_count() {
+    uint remaining = 0;
+
+    for (int i = 0; i < ALIEN_COUNT; i++) {
+        if (aliens[i].exists) {
+            remaining++;
+        }
+    }
+
+    return remaining;
 }
 
 void move_aliens() {

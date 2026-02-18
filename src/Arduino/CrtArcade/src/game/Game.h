@@ -2,10 +2,10 @@
 #define GAME_H
 
 #include "GameState.h"
-#include "TitleScene.h"
-#include "LevelStartScene.h"
-#include "GamePlayScene.h"
-#include "GameOverScene.h"
+#include "scenes/TitleScene.h"
+#include "scenes/LevelStartScene.h"
+#include "scenes/GamePlayScene.h"
+#include "scenes/GameOverScene.h"
 #include "../Input.h"
 #include "../Graphics.h"
 #include "../assets/SpriteData.h"

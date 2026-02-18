@@ -1,7 +1,7 @@
 #include <arduino.h>
 #include "GameOverScene.h"
-#include "Game.h"
-#include "../video/VideoConstants.h"
+#include "../Game.h"
+#include "../../video/VideoConstants.h"
 
 GameOverScene::GameOverScene(Game* game, Graphics* graphics) {
     this->game = game;

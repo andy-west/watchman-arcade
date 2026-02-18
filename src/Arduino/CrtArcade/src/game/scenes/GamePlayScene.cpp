@@ -1,11 +1,11 @@
 #include <arduino.h>
 #include "GamePlayScene.h"
-#include "Alien.h"
-#include "Shield.h"
-#include "Player.h"
-#include "GameConstants.h"
-#include "../video/VideoConstants.h"
-#include "../GlobalConstants.h"
+#include "../Alien.h"
+#include "../Shield.h"
+#include "../Player.h"
+#include "../GameConstants.h"
+#include "../../video/VideoConstants.h"
+#include "../../GlobalConstants.h"
 
 GamePlayScene::GamePlayScene(Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data) {
     this->game = game;

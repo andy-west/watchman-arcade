@@ -1,7 +1,7 @@
 #include <arduino.h>
 #include "LevelStartScene.h"
-#include "Game.h"
-#include "../video/VideoConstants.h"
+#include "../Game.h"
+#include "../../video/VideoConstants.h"
 
 LevelStartScene::LevelStartScene(Game* game, Graphics* graphics) {
     this->game = game;

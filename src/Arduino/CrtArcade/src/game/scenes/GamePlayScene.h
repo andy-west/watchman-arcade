@@ -1,10 +1,10 @@
 #ifndef GAME_PLAY_SCENE_H
 #define GAME_PLAY_SCENE_H
 
-#include "GameConstants.h"
-#include "../Input.h"
-#include "../Graphics.h"
-#include "../assets/SpriteData.h"
+#include "../GameConstants.h"
+#include "../../Input.h"
+#include "../../Graphics.h"
+#include "../../assets/SpriteData.h"
 
 class Game;
 class Alien;

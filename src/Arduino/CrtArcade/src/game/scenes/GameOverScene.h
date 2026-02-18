@@ -1,7 +1,7 @@
 #ifndef GAME_OVER_SCENE_H
 #define GAME_OVER_SCENE_H
 
-#include "../Graphics.h"
+#include "../../Graphics.h"
 
 class Game;
 

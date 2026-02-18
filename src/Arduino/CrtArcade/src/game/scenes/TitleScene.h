@@ -1,9 +1,9 @@
 #ifndef TITLE_SCENE_H
 #define TITLE_SCENE_H
 
-#include "../Input.h"
-#include "../Graphics.h"
-#include "../assets/TitleScreen.h"
+#include "../../Input.h"
+#include "../../Graphics.h"
+#include "../../assets/TitleScreen.h"
 
 class Game;
 

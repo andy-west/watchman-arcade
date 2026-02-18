@@ -1,7 +1,7 @@
 #include <arduino.h>
 #include "Game.h"
 #include "GameConstants.h"
-#include "GamePlayScene.h"
+#include "scenes/GamePlayScene.h"
 #include "../GlobalConstants.h"
 #include "../video/VideoConstants.h"
 

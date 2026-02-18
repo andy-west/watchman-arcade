@@ -1,7 +1,7 @@
 #ifndef LEVEL_START_SCREEN_H
 #define LEVEL_START_SCREEN_H
 
-#include "../Graphics.h"
+#include "../../Graphics.h"
 
 class Game;
 

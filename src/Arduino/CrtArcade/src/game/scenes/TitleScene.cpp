@@ -1,6 +1,6 @@
 #include <arduino.h>
 #include "TitleScene.h"
-#include "Game.h"
+#include "../Game.h"
 
 TitleScene::TitleScene(Game* game, Input* input, Graphics* graphics) {
     this->game = game;

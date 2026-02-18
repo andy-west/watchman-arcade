@@ -1,19 +1,27 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-extern bool left_pressed;
-extern bool right_pressed;
-extern bool fire_pressed;
+class Input {
+public:
+    bool left_pressed = false;
+    bool right_pressed = false;
+    bool fire_pressed = false;
 
-extern bool prev_left_pressed;
-extern bool prev_right_pressed;
-extern bool prev_fire_pressed;
+    bool prev_left_pressed = false;
+    bool prev_right_pressed = false;
+    bool prev_fire_pressed = false;
 
-extern bool left_pressed_this_frame;
-extern bool right_pressed_this_frame;
-extern bool fire_pressed_this_frame;
+    bool left_pressed_this_frame = false;
+    bool right_pressed_this_frame = false;
+    bool fire_pressed_this_frame = false;
 
-extern void setup_input();
-extern void update_input();
+    Input();
+    void update();
+
+private:
+    const uint LEFT_PIN = 13;
+    const uint RIGHT_PIN = 14;
+    const uint FIRE_PIN = 15;
+};
 
 #endif

@@ -1,25 +1,13 @@
 #include <arduino.h>
-#include "constants.h"
+#include "Input.h"
 
-bool left_pressed = false;
-bool right_pressed = false;
-bool fire_pressed = false;
-
-bool prev_left_pressed = false;
-bool prev_right_pressed = false;
-bool prev_fire_pressed = false;
-
-bool left_pressed_this_frame = false;
-bool right_pressed_this_frame = false;
-bool fire_pressed_this_frame = false;
-
-void setup_input() {
+Input::Input() {
     pinMode(LEFT_PIN, INPUT_PULLUP);
     pinMode(RIGHT_PIN, INPUT_PULLUP);
     pinMode(FIRE_PIN, INPUT_PULLUP);
 }
 
-void update_input() {
+void Input::update() {
     prev_left_pressed = left_pressed;
     left_pressed = !digitalRead(LEFT_PIN);
     left_pressed_this_frame = left_pressed && !prev_left_pressed;

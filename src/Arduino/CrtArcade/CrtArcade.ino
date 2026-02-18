@@ -1,47 +1,28 @@
-//#define DEBUG
+#include "src/Debug.h"
+#include "src/video/Video.h"
+#include "src/Graphics.h"
+#include "src/game/game.h"
 
-#ifdef DEBUG
-#define debug_print(...) Serial.print(__VA_ARGS__)
-#define debug_println(...) Serial.println(__VA_ARGS__)
-#else
-#define debug_print(...)
-#define debug_println(...)
-#endif
-
-#include "src/constants.h"
-#include "src/input.h"
-#include "src/video.h"
-#include "src/game.h"
+Video* video = nullptr;
+Graphics* graphics = nullptr;
+Game* game = nullptr;
 
 void setup() {
+    Debug::initialize();
 
-#ifdef DEBUG
-    Serial.begin(9600);
-
-    while (!Serial) {
-        delay(10);
-    }
-#endif
-
-    setup_input();
-    setup_video();
-
-    game_mode = GAME_MODE_TITLE;
+    video = new Video();
+    graphics = new Graphics(video);
+    game = new Game(graphics);
 
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop() {
-    // Wait until the buffer is flipped from the previous frame.
-    while (is_ready_to_flip);
+    video->wait_for_buffer_flip();
 
-    if (was_frame_skipped) {
-        debug_println("Frame skipped.");
-    }
+    game->update();
+    game->draw();
 
-    update();
-    draw();
-
-    is_ready_to_flip = true;
+    video->is_buffer_ready_to_flip = true;
 }

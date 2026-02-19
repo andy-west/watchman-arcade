@@ -106,16 +106,18 @@ void Player::move_player_right() {
 }
 
 void Player::draw() {
-    if (is_hit_animating) {
-        if ((hit_countdown / 4) % 2 == 0) {
+    if (!game->is_game_ending || game->lives > 0) {
+        if (is_hit_animating) {
+            if ((hit_countdown / 4) % 2 == 0) {
+                graphics->draw_sprite(sprite_data->player_sprite, x, Y);
+            }
+            else {
+                graphics->draw_sprite(sprite_data->player_hit_sprite, x, Y);
+            }
+        }
+        else if (!is_respawning || respawn_visible) {
             graphics->draw_sprite(sprite_data->player_sprite, x, Y);
         }
-        else {
-            graphics->draw_sprite(sprite_data->player_hit_sprite, x, Y);
-        }
-    }
-    else if (!is_respawning || respawn_visible) {
-        graphics->draw_sprite(sprite_data->player_sprite, x, Y);
     }
 
     missile->draw();

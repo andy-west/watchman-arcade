@@ -38,6 +38,7 @@ void PlayerMissile::update() {
 
 void PlayerMissile::deactivate() {
     is_active = false;
+    explosion->is_visible = false;
 }
 
 void PlayerMissile::destroy_alien_if_hit() {

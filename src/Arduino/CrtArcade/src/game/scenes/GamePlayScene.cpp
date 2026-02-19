@@ -161,10 +161,6 @@ void GamePlayScene::try_fire_alien_missile() {
         }
     }
 
-    if (avoid < 0) {
-        avoid = last_firing_alien_index;
-    }
-
     int shooter_index = -1;
 
     if (random(0, 2) == 0) {

@@ -20,6 +20,7 @@ public:
     Player(Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data, Alien* aliens[]);
     void update();
     void draw();
+    void on_hit();
 
 private:
     Game* game;
@@ -30,6 +31,16 @@ private:
 
     PlayerMissile* missile;
 
+    bool is_hit_animating;
+    uint hit_countdown;
+
+    bool is_respawning;
+    uint respawn_countdown;
+    bool respawn_visible;
+    uint respawn_blink_countdown;
+
+    void animate_hit();
+    void animate_respawn();
     void move_player_left();
     void move_player_right();
 };

@@ -13,6 +13,8 @@ public:
     static const uint PLAYER_HEIGHT = 8;
     static const uint PLAYER_MISSILE_WIDTH = 1;
     static const uint PLAYER_MISSILE_HEIGHT = 7;
+    static const uint ALIEN_MISSILE_WIDTH = 3;
+    static const uint ALIEN_MISSILE_HEIGHT = 7;
     static const uint EXPLOSION_WIDTH = 12;
     static const uint EXPLOSION_HEIGHT = 8;
 
@@ -126,6 +128,18 @@ public:
         0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0
     };
 
+    byte player_hit_sprite[PLAYER_WIDTH * PLAYER_HEIGHT + 2] = {
+        PLAYER_WIDTH, PLAYER_HEIGHT,
+        0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 3, 0, 3, 0, 0, 0, 0, 3, 0,
+        0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0,
+        0, 0, 3, 0, 3, 3, 0, 3, 3, 0, 0, 0, 0,
+        0, 0, 3, 0, 0, 3, 0, 0, 3, 0, 0, 3, 0,
+        3, 0, 0, 0, 3, 0, 3, 3, 0, 0, 3, 3, 3,
+        3, 3, 3, 0, 0, 3, 0, 3, 0, 3, 3, 3, 3,
+        0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 0
+    };
+
     byte player_missile_sprite[PLAYER_MISSILE_WIDTH * PLAYER_MISSILE_HEIGHT + 2] = {
         PLAYER_MISSILE_WIDTH, PLAYER_MISSILE_HEIGHT,
         3,
@@ -135,6 +149,17 @@ public:
         3,
         3,
         3
+    };
+
+    byte alien_missile_sprite[ALIEN_MISSILE_WIDTH * ALIEN_MISSILE_HEIGHT + 2] = {
+        ALIEN_MISSILE_WIDTH, ALIEN_MISSILE_HEIGHT,
+        0, 3, 0,
+        3, 0, 0,
+        0, 3, 0,
+        0, 0, 3,
+        0, 3, 0,
+        3, 0, 0,
+        0, 3, 0
     };
 
     byte explosion_sprite[EXPLOSION_WIDTH * EXPLOSION_HEIGHT + 2] = {

@@ -5,6 +5,7 @@
 #include "../../Input.h"
 #include "../../Graphics.h"
 #include "../../assets/SpriteData.h"
+#include "../AlienMissile.h"
 
 class Game;
 class Alien;
@@ -21,6 +22,7 @@ public:
 
 private:
     const uint TEXT_MARGIN = 20;
+    static constexpr uint ALIEN_FIRE_INTERVAL_FRAMES = (uint)(0.5f * 60);
 
     Game* game;
     Input* input;
@@ -30,7 +32,7 @@ private:
     Shield* shields[GameConstants::SHIELD_COUNT] = {};
     Player* player;
 
-    AlienMissile* alien_missiles[2] = {};
+    AlienMissile* alien_missiles[AlienMissile::MAX_ACTIVE] = {};
     uint alien_fire_countdown;
     int last_firing_alien_index;
 

@@ -36,6 +36,10 @@ void PlayerMissile::update() {
     explosion->update();
 }
 
+void PlayerMissile::deactivate() {
+    is_active = false;
+}
+
 void PlayerMissile::destroy_alien_if_hit() {
     for (int i = 0; i < GameConstants::ALIEN_COUNT; i++) {
         Alien* alien = aliens[i];

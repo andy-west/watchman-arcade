@@ -19,6 +19,7 @@ public:
     PlayerMissile(Player* player, Alien* aliens[], Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data);
     void update();
     void draw();
+    void deactivate();
 
 private:
     const uint SPEED = 2;

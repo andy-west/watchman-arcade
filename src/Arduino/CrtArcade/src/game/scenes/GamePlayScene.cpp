@@ -31,7 +31,7 @@ void GamePlayScene::reset_level() {
     alien_fire_countdown = (uint)(0.5f * 60);
     last_firing_alien_index = -1;
 
-    for (int i = 0; i < 2; i++) {
+    for (uint i = 0; i < AlienMissile::MAX_ACTIVE; i++) {
         if (alien_missiles[i] != nullptr) {
             alien_missiles[i]->is_active = false;
             alien_missiles[i]->source_alien_index = -1;
@@ -70,7 +70,7 @@ void GamePlayScene::create_aliens() {
 }
 
 void GamePlayScene::create_alien_missiles() {
-    for (int i = 0; i < 2; i++) {
+    for (uint i = 0; i < AlienMissile::MAX_ACTIVE; i++) {
         if (alien_missiles[i] != nullptr) {
             delete alien_missiles[i];
         }
@@ -105,13 +105,27 @@ void GamePlayScene::update() {
     }
     else {
         player->update();
+
+        if (player->is_temporarily_disabled()) {
+            player->deactivate_missile();
+
+            for (uint i = 0; i < AlienMissile::MAX_ACTIVE; i++) {
+                if (alien_missiles[i] != nullptr) {
+                    alien_missiles[i]->is_active = false;
+                    alien_missiles[i]->source_alien_index = -1;
+                }
+            }
+
+            return;
+        }
+
         update_aliens();
         update_alien_missiles();
     }
 }
 
 void GamePlayScene::update_alien_missiles() {
-    for (int i = 0; i < 2; i++) {
+    for (uint i = 0; i < AlienMissile::MAX_ACTIVE; i++) {
         alien_missiles[i]->update();
     }
 
@@ -119,27 +133,27 @@ void GamePlayScene::update_alien_missiles() {
 
     if (alien_fire_countdown <= 0) {
         try_fire_alien_missile();
-        alien_fire_countdown = (uint)(1.25f * 60);
+        alien_fire_countdown = ALIEN_FIRE_INTERVAL_FRAMES;
     }
 }
 
 void GamePlayScene::try_fire_alien_missile() {
     int active_count = 0;
 
-    for (int i = 0; i < 2; i++) {
+    for (uint i = 0; i < AlienMissile::MAX_ACTIVE; i++) {
         if (alien_missiles[i]->is_active) {
             active_count++;
         }
     }
 
-    if (active_count >= 2) {
+    if (active_count >= (int)AlienMissile::MAX_ACTIVE) {
         return;
     }
 
     int avoid = -1;
 
     if (active_count == 1) {
-        for (int i = 0; i < 2; i++) {
+        for (uint i = 0; i < AlienMissile::MAX_ACTIVE; i++) {
             if (alien_missiles[i]->is_active) {
                 avoid = alien_missiles[i]->source_alien_index;
                 break;
@@ -151,7 +165,30 @@ void GamePlayScene::try_fire_alien_missile() {
         avoid = last_firing_alien_index;
     }
 
-    int shooter_index = choose_random_shooter(avoid);
+    int shooter_index = -1;
+
+    if (random(0, 2) == 0) {
+        int player_center_x = (int)player->x + (int)(SpriteData::PLAYER_WIDTH / 2);
+        int column = (player_center_x - Alien::MARGIN_SIDE) / Alien::SPACING;
+
+        if (column < 0) {
+            column = 0;
+        }
+
+        if (column >= (int)GameConstants::ALIEN_COLUMNS) {
+            column = (int)GameConstants::ALIEN_COLUMNS - 1;
+        }
+
+        int targeted_index = get_bottom_alien_in_column(column);
+
+        if (targeted_index >= 0 && targeted_index != avoid) {
+            shooter_index = targeted_index;
+        }
+    }
+
+    if (shooter_index < 0) {
+        shooter_index = choose_random_shooter(avoid);
+    }
 
     if (shooter_index < 0) {
         return;
@@ -161,7 +198,7 @@ void GamePlayScene::try_fire_alien_missile() {
     uint start_x = shooter->x + (SpriteData::ALIEN_WIDTH / 2) - (SpriteData::ALIEN_MISSILE_WIDTH / 2);
     uint start_y = shooter->y + SpriteData::ALIEN_HEIGHT;
 
-    for (int i = 0; i < 2; i++) {
+    for (uint i = 0; i < AlienMissile::MAX_ACTIVE; i++) {
         if (!alien_missiles[i]->is_active) {
             alien_missiles[i]->launch(start_x, start_y, shooter_index);
             last_firing_alien_index = shooter_index;
@@ -317,7 +354,7 @@ void GamePlayScene::draw_shields() {
 }
 
 void GamePlayScene::draw_alien_missiles() {
-    for (int i = 0; i < 2; i++) {
+    for (uint i = 0; i < AlienMissile::MAX_ACTIVE; i++) {
         alien_missiles[i]->draw();
     }
 }

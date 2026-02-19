@@ -21,6 +21,8 @@ public:
     void update();
     void draw();
     void on_hit();
+    bool is_temporarily_disabled() const;
+    void deactivate_missile();
 
 private:
     Game* game;

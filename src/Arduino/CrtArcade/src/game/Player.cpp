@@ -43,6 +43,16 @@ void Player::update() {
     missile->update();
 }
 
+bool Player::is_temporarily_disabled() const {
+    return is_hit_animating || is_respawning;
+}
+
+void Player::deactivate_missile() {
+    if (missile != nullptr) {
+        missile->deactivate();
+    }
+}
+
 void Player::animate_hit() {
     hit_countdown--;
 

@@ -168,18 +168,7 @@ void GamePlayScene::try_fire_alien_missile() {
     int shooter_index = -1;
 
     if (random(0, 2) == 0) {
-        int player_center_x = (int)player->x + (int)(SpriteData::PLAYER_WIDTH / 2);
-        int column = (player_center_x - Alien::MARGIN_SIDE) / Alien::SPACING;
-
-        if (column < 0) {
-            column = 0;
-        }
-
-        if (column >= (int)GameConstants::ALIEN_COLUMNS) {
-            column = (int)GameConstants::ALIEN_COLUMNS - 1;
-        }
-
-        int targeted_index = get_bottom_alien_in_column(column);
+        int targeted_index = get_alien_above_player();
 
         if (targeted_index >= 0 && targeted_index != avoid) {
             shooter_index = targeted_index;
@@ -242,6 +231,27 @@ int GamePlayScene::get_bottom_alien_in_column(int column) {
             if (alien->y > best_y) {
                 best_y = alien->y;
                 best_index = i;
+            }
+        }
+    }
+
+    return best_index;
+}
+
+int GamePlayScene::get_alien_above_player() {
+    int player_center_x = (int)player->x + (int)(SpriteData::PLAYER_WIDTH / 2);
+    int best_index = -1;
+    int best_y = -1;
+
+    for (int i = 0; i < (int)GameConstants::ALIEN_COUNT; i++) {
+        Alien* alien = aliens[i];
+
+        if (alien != nullptr && alien->exists) {
+            if (player_center_x >= alien->x && player_center_x < alien->x + (int)SpriteData::ALIEN_WIDTH) {
+                if (alien->y > best_y) {
+                    best_y = alien->y;
+                    best_index = i;
+                }
             }
         }
     }

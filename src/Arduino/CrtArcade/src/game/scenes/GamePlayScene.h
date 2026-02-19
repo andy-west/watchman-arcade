@@ -42,6 +42,7 @@ private:
     void update_alien_missiles();
     void try_fire_alien_missile();
     int get_bottom_alien_in_column(int column);
+    int get_alien_above_player();
     int choose_random_shooter(int avoid_alien_index);
     void update_aliens();
     uint get_alien_animation_time();

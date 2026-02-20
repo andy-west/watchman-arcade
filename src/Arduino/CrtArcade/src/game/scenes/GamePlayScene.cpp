@@ -114,6 +114,8 @@ void GamePlayScene::update() {
     else {
         player->update();
 
+        update_ufo();
+
         if (player->is_temporarily_disabled()) {
             player->deactivate_missile();
 
@@ -129,7 +131,6 @@ void GamePlayScene::update() {
 
         update_aliens();
         update_alien_missiles();
-        update_ufo();
     }
 }
 
@@ -346,7 +347,7 @@ void GamePlayScene::draw() {
 }
 
 void GamePlayScene::draw_status() {
-    if (ufo->is_active) {
+    if (ufo->is_active || ufo->is_explosion_visible()) {
         return;
     }
 

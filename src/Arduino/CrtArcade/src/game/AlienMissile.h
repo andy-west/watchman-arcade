@@ -14,7 +14,7 @@ public:
     static const uint MAX_ACTIVE = 2;
 
     uint x;
-    uint y;
+    float y;
 
     AlienMissile(Player* player, Game* game, Graphics* graphics, SpriteData* sprite_data);
 
@@ -26,7 +26,7 @@ public:
     void launch(uint start_x, uint start_y, int alien_index);
 
 private:
-    static const uint SPEED = 1;
+    static constexpr float SPEED = 0.5;
 
     Player* player;
     Game* game;

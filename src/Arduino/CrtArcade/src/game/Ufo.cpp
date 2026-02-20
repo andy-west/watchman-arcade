@@ -19,7 +19,7 @@ void Ufo::update() {
         if (direction == Direction::RIGHT) {
             x += SPEED;
 
-            if ((int)x + SpriteData::UFO_WIDTH >= (int)VideoConstants::SCREEN_WIDTH) {
+            if (x + SpriteData::UFO_WIDTH >= VideoConstants::SCREEN_WIDTH) {
                 deactivate();
                 return;
             }
@@ -72,7 +72,7 @@ void Ufo::check_missile_hit() {
         missile_y >= Y && missile_y < Y + SpriteData::UFO_HEIGHT) {
         game->score += POINTS;
         player_missile->deactivate();
-        explosion->show(x + (SpriteData::UFO_WIDTH / 2) - (SpriteData::EXPLOSION_WIDTH / 2), Y);
+        explosion->show((int)x + (SpriteData::UFO_WIDTH / 2) - (SpriteData::EXPLOSION_WIDTH / 2), Y);
         deactivate();
     }
 }

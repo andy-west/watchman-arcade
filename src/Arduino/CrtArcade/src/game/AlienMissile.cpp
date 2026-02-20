@@ -50,6 +50,6 @@ void AlienMissile::deactivate() {
 
 void AlienMissile::draw() {
     if (is_active) {
-        graphics->draw_sprite(sprite_data->alien_missile_sprite, x, y);
+        graphics->draw_sprite(sprite_data->alien_missile_sprite, x, (int)y);
     }
 }

@@ -6,12 +6,14 @@
 #include "../../Graphics.h"
 #include "../../assets/SpriteData.h"
 #include "../AlienMissile.h"
+#include "../Ufo.h"
 
 class Game;
 class Alien;
 class Shield;
 class Player;
 class AlienMissile;
+class Ufo;
 
 class GamePlayScene {
 public:
@@ -36,7 +38,14 @@ private:
     uint alien_fire_countdown;
     int last_firing_alien_index;
 
+    Ufo* ufo;
+    uint ufo_spawn_countdown;
+    Direction ufo_next_direction;
+
     void create_aliens();
+    void create_ufo();
+    void update_ufo();
+    void draw_ufo();
     void create_shields();
     void create_alien_missiles();
     void update_alien_missiles();

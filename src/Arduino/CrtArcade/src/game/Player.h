@@ -23,6 +23,7 @@ public:
     void on_hit();
     bool is_temporarily_disabled() const;
     void deactivate_missile();
+    PlayerMissile* get_missile() const;
 
 private:
     Game* game;

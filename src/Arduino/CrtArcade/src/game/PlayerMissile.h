@@ -10,13 +10,17 @@ class Game;
 class Player;
 class Alien;
 class Explosion;
+class Ufo;
 
 class PlayerMissile {
 public:
     uint x;
     uint y;
 
+    bool is_active;
+
     PlayerMissile(Player* player, Alien* aliens[], Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data);
+    void set_ufo(Ufo* ufo);
     void update();
     void draw();
     void deactivate();
@@ -30,8 +34,8 @@ private:
     Input* input;
     Graphics* graphics;
     SpriteData* sprite_data;
+    Ufo* ufo;
 
-    bool is_active;
     Explosion* explosion;
 
     void destroy_alien_if_hit();

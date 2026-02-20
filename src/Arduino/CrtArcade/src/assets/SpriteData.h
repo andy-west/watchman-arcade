@@ -17,6 +17,8 @@ public:
     static const uint ALIEN_MISSILE_HEIGHT = 7;
     static const uint EXPLOSION_WIDTH = 12;
     static const uint EXPLOSION_HEIGHT = 8;
+    static const uint UFO_WIDTH = 14;
+    static const uint UFO_HEIGHT = 7;
 
     byte* aliens[3][2] = {
         { alien_a_0, alien_a_1 },
@@ -172,6 +174,17 @@ public:
         0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 3, 0,
         3, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 3,
         0, 0, 3, 0, 0, 3, 0, 0, 0, 3, 0, 0
+    };
+
+    byte ufo_sprite[UFO_WIDTH * UFO_HEIGHT + 2] = {
+        UFO_WIDTH, UFO_HEIGHT,
+        0, 0, 0, 0, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0,
+        0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0,
+        0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0,
+        3, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 3,
+        0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0,
+        0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0,
+        0, 0, 0, 0, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0
     };
 };
 

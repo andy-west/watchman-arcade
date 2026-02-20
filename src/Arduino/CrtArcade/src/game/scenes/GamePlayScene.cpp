@@ -4,6 +4,7 @@
 #include "../Shield.h"
 #include "../Player.h"
 #include "../AlienMissile.h"
+#include "../Ufo.h"
 #include "../GameConstants.h"
 #include "../../video/VideoConstants.h"
 #include "../../GlobalConstants.h"
@@ -18,6 +19,9 @@ GamePlayScene::GamePlayScene(Game* game, Input* input, Graphics* graphics, Sprit
     Shield::sprite_data = sprite_data;
 
     player = new Player(game, input, graphics, sprite_data, aliens);
+    ufo = new Ufo(player->get_missile(), game, graphics, sprite_data);
+    player->get_missile()->set_ufo(ufo);
+    ufo_next_direction = Direction::LEFT;
 }
 
 void GamePlayScene::reset_level() {
@@ -27,6 +31,10 @@ void GamePlayScene::reset_level() {
 
     player->x = Player::BOUNDARY_SIDE;
     game->is_game_ending = false;
+
+    ufo->is_active = false;
+    ufo_spawn_countdown = Ufo::SPAWN_INTERVAL_FRAMES;
+    ufo_next_direction = Direction::LEFT;
 
     alien_fire_countdown = (uint)(0.5f * 60);
     last_firing_alien_index = -1;
@@ -121,6 +129,7 @@ void GamePlayScene::update() {
 
         update_aliens();
         update_alien_missiles();
+        update_ufo();
     }
 }
 
@@ -307,16 +316,40 @@ void GamePlayScene::move_aliens_down() {
     }
 }
 
+void GamePlayScene::update_ufo() {
+    bool was_active = ufo->is_active;
+
+    ufo->update();
+
+    if (was_active && !ufo->is_active) {
+        ufo_spawn_countdown = Ufo::SPAWN_INTERVAL_FRAMES;
+    }
+
+    if (!ufo->is_active && !ufo->is_explosion_visible()) {
+        ufo_spawn_countdown--;
+
+        if (ufo_spawn_countdown <= 0) {
+            ufo->launch(ufo_next_direction);
+            ufo_next_direction = (ufo_next_direction == Direction::LEFT) ? Direction::RIGHT : Direction::LEFT;
+        }
+    }
+}
+
 void GamePlayScene::draw() {
     graphics->clear_screen(VideoConstants::COLOR_BLACK);
     draw_status();
     draw_aliens();
     draw_shields();
     draw_alien_missiles();
+    draw_ufo();
     player->draw();
 }
 
 void GamePlayScene::draw_status() {
+    if (ufo->is_active) {
+        return;
+    }
+
     draw_score();
     draw_lives();
 }
@@ -363,4 +396,8 @@ void GamePlayScene::draw_alien_missiles() {
     for (uint i = 0; i < AlienMissile::MAX_ACTIVE; i++) {
         alien_missiles[i]->draw();
     }
+}
+
+void GamePlayScene::draw_ufo() {
+    ufo->draw();
 }

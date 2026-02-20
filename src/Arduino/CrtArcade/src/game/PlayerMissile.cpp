@@ -4,6 +4,7 @@
 #include "Alien.h"
 #include "Game.h"
 #include "Explosion.h"
+#include "Ufo.h"
 
 PlayerMissile::PlayerMissile(Player* player, Alien* aliens[], Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data) {
     this->player = player;
@@ -14,14 +15,19 @@ PlayerMissile::PlayerMissile(Player* player, Alien* aliens[], Game* game, Input*
     this->sprite_data = sprite_data;
 
     is_active = false;
+    ufo = nullptr;
     explosion = new Explosion(graphics, sprite_data);
+}
+
+void PlayerMissile::set_ufo(Ufo* ufo) {
+    this->ufo = ufo;
 }
 
 void PlayerMissile::update() {
     if (is_active) {
         y -= SPEED;
 
-        if (y <= GameConstants::CEILING_Y) {
+        if (y <= (ufo != nullptr && ufo->is_active ? Ufo::Y : GameConstants::CEILING_Y)) {
             is_active = false;
         }
 

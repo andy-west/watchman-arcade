@@ -53,6 +53,10 @@ void Player::deactivate_missile() {
     }
 }
 
+PlayerMissile* Player::get_missile() const {
+    return missile;
+}
+
 void Player::animate_hit() {
     hit_countdown--;
 

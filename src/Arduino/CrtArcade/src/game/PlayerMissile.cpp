@@ -2,13 +2,15 @@
 #include "PlayerMissile.h"
 #include "Player.h"
 #include "Alien.h"
+#include "Shield.h"
 #include "Game.h"
 #include "Explosion.h"
 #include "Ufo.h"
 
-PlayerMissile::PlayerMissile(Player* player, Alien* aliens[], Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data) {
+PlayerMissile::PlayerMissile(Player* player, Alien* aliens[], Shield* shields[], Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data) {
     this->player = player;
     this->aliens = aliens;
+    this->shields = shields;
     this->game = game;
     this->input = input;
     this->graphics = graphics;
@@ -29,6 +31,10 @@ void PlayerMissile::update() {
 
         if (y <= (ufo != nullptr && ufo->is_active ? Ufo::Y : GameConstants::CEILING_Y)) {
             is_active = false;
+        }
+
+        if (check_shield_hit()) {
+            return;
         }
 
         destroy_alien_if_hit();
@@ -63,6 +69,20 @@ void PlayerMissile::destroy_alien_if_hit() {
             }
         }
     }
+}
+
+bool PlayerMissile::check_shield_hit() {
+    for (int i = 0; i < GameConstants::SHIELD_COUNT; i++) {
+        if (shields[i]->check_hit(x, y, SpriteData::PLAYER_MISSILE_WIDTH, SpriteData::PLAYER_MISSILE_HEIGHT)) {
+            int hit_x = x + SpriteData::PLAYER_MISSILE_WIDTH / 2;
+            int hit_y = y;
+            shields[i]->damage(hit_x, hit_y);
+            is_active = false;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void PlayerMissile::draw() {

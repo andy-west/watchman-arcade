@@ -9,6 +9,8 @@ public:
     static const byte ALIEN_HEIGHT = 8;
     static const byte SHIELD_WIDTH = 22;
     static const byte SHIELD_HEIGHT = 16;
+    static const byte SHIELD_DAMAGE_WIDTH = 5;
+    static const byte SHIELD_DAMAGE_HEIGHT = 5;
     static const uint PLAYER_WIDTH = 13;
     static const uint PLAYER_HEIGHT = 8;
     static const uint PLAYER_MISSILE_WIDTH = 1;
@@ -116,6 +118,15 @@ public:
         3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3,
         3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3,
         0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 0
+    };
+
+    byte shield_damage_sprite[SHIELD_DAMAGE_WIDTH * SHIELD_DAMAGE_HEIGHT + 2] = {
+        SHIELD_DAMAGE_WIDTH, SHIELD_DAMAGE_HEIGHT,
+        0, 3, 0, 3, 0,
+        3, 0, 0, 0, 3,
+        0, 0, 0, 0, 0,
+        3, 0, 0, 0, 3,
+        0, 3, 0, 3, 0
     };
 
     byte player_sprite[PLAYER_WIDTH * PLAYER_HEIGHT + 2] = {

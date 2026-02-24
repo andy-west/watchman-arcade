@@ -19,6 +19,8 @@ public:
     Shield(int x, int y, bool exists, Graphics* graphics);
     void restore_shield_sprite();
     void draw();
+    bool check_hit(int missile_x, int missile_y, int missile_width, int missile_height);
+    void damage(int hit_x, int hit_y);
 
 private:
     Graphics* graphics;

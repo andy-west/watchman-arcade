@@ -18,7 +18,7 @@ GamePlayScene::GamePlayScene(Game* game, Input* input, Graphics* graphics, Sprit
     Alien::sprite_data = sprite_data;
     Shield::sprite_data = sprite_data;
 
-    player = new Player(game, input, graphics, sprite_data, aliens);
+    player = new Player(game, input, graphics, sprite_data, aliens, shields);
     ufo = new Ufo(player->get_missile(), game, graphics, sprite_data);
     player->get_missile()->set_ufo(ufo);
     ufo_next_direction = Direction::LEFT;
@@ -83,7 +83,7 @@ void GamePlayScene::create_alien_missiles() {
             delete alien_missiles[i];
         }
 
-        alien_missiles[i] = new AlienMissile(player, game, graphics, sprite_data);
+        alien_missiles[i] = new AlienMissile(player, shields, game, graphics, sprite_data);
     }
 }
 

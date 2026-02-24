@@ -3,14 +3,14 @@
 #include "Game.h"
 #include "../video/VideoConstants.h"
 
-Player::Player(Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data, Alien* aliens[]) {
-    this->game = game;
-    this->input = input;
-    this->graphics = graphics;
-    this->sprite_data = sprite_data;
-    this->aliens = aliens;
+Player::Player(Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data, Alien* aliens[], Shield* shields[]) {
+this->game = game;
+this->input = input;
+this->graphics = graphics;
+this->sprite_data = sprite_data;
+this->aliens = aliens;
 
-    this->missile = new PlayerMissile(this, aliens, game, input, graphics, sprite_data);
+this->missile = new PlayerMissile(this, aliens, shields, game, input, graphics, sprite_data);
 
     is_hit_animating = false;
     hit_countdown = 0;

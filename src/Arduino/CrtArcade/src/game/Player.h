@@ -9,6 +9,7 @@
 
 class Game;
 class Alien;
+class Shield;
 
 class Player {
 public:
@@ -17,7 +18,7 @@ public:
 
     uint x;
 
-    Player(Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data, Alien* aliens[]);
+    Player(Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data, Alien* aliens[], Shield* shields[]);
     void update();
     void draw();
     void on_hit();

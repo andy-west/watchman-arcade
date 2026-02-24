@@ -1,10 +1,12 @@
 #include <arduino.h>
 #include "AlienMissile.h"
 #include "Player.h"
+#include "Shield.h"
 #include "Game.h"
 
-AlienMissile::AlienMissile(Player* player, Game* game, Graphics* graphics, SpriteData* sprite_data) {
+AlienMissile::AlienMissile(Player* player, Shield* shields[], Game* game, Graphics* graphics, SpriteData* sprite_data) {
     this->player = player;
+    this->shields = shields;
     this->game = game;
     this->graphics = graphics;
     this->sprite_data = sprite_data;
@@ -32,6 +34,10 @@ void AlienMissile::update() {
         return;
     }
 
+    if (check_shield_hit()) {
+        return;
+    }
+
     if (x + SpriteData::ALIEN_MISSILE_WIDTH > player->x && x < player->x + SpriteData::PLAYER_WIDTH &&
         y + SpriteData::ALIEN_MISSILE_HEIGHT > Player::Y && y < Player::Y + SpriteData::PLAYER_HEIGHT) {
         hit_player();
@@ -46,6 +52,20 @@ void AlienMissile::hit_player() {
 void AlienMissile::deactivate() {
     is_active = false;
     source_alien_index = -1;
+}
+
+bool AlienMissile::check_shield_hit() {
+    for (int i = 0; i < GameConstants::SHIELD_COUNT; i++) {
+        if (shields[i]->check_hit(x, (int)y, SpriteData::ALIEN_MISSILE_WIDTH, SpriteData::ALIEN_MISSILE_HEIGHT)) {
+            int hit_x = x + SpriteData::ALIEN_MISSILE_WIDTH / 2;
+            int hit_y = (int)y + SpriteData::ALIEN_MISSILE_HEIGHT;
+            shields[i]->damage(hit_x, hit_y);
+            deactivate();
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void AlienMissile::draw() {

@@ -43,7 +43,6 @@ private:
     Direction ufo_next_direction;
 
     void create_aliens();
-    void create_ufo();
     void update_ufo();
     void draw_ufo();
     void create_shields();

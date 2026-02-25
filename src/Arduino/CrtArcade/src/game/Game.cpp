@@ -53,3 +53,12 @@ void Game::end() {
     game_ending_countdown = GAME_ENDING_TIME;
     is_game_ending = true;
 }
+
+void Game::add_score(uint points) {
+    uint old_score = score;
+    score += points;
+
+    if (score / EXTRA_LIFE_INTERVAL > old_score / EXTRA_LIFE_INTERVAL) {
+        lives++;
+    }
+}

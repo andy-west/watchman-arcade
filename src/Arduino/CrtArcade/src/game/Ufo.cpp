@@ -70,7 +70,7 @@ void Ufo::check_missile_hit() {
 
     if (missile_x >= x && missile_x < x + SpriteData::UFO_WIDTH &&
         missile_y >= Y && missile_y < Y + SpriteData::UFO_HEIGHT) {
-        game->score += POINTS;
+        game->add_score(POINTS);
         player_missile->deactivate();
         explosion->show((int)x + (SpriteData::UFO_WIDTH / 2) - (SpriteData::EXPLOSION_WIDTH / 2), Y);
         deactivate();

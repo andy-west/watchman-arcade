@@ -12,7 +12,7 @@ class PlayerMissile;
 class Ufo {
 public:
     static const uint Y = 20;
-    static const uint POINTS = 150;
+    static const uint POINTS = 200;
     static constexpr float SPAWN_INTERVAL_SECONDS = 25.0;
     static const uint SPAWN_INTERVAL_FRAMES = (uint)(SPAWN_INTERVAL_SECONDS * 60);
 

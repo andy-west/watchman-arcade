@@ -66,7 +66,7 @@ void PlayerMissile::destroy_alien_if_hit() {
             if (x >= alien->x && x < alien->x + SpriteData::ALIEN_WIDTH &&
                 y >= alien->y && y < alien->y + SpriteData::ALIEN_HEIGHT) {
                     alien->exists = false;
-                    game->score += alien->points;
+                    game->add_score(alien->points);
                     is_active = false;
                     explosion->show(alien->x, alien->y);
                     break;

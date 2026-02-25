@@ -29,8 +29,10 @@ public:
     void reset();
     void reset_level(uint level_number);
     void end();
+    void add_score(uint points);
 
 private:
+    static const uint EXTRA_LIFE_INTERVAL = 10000;
     static constexpr float GAME_ENDING_SECONDS = 3.0;
     static const uint GAME_ENDING_TIME = GAME_ENDING_SECONDS * 60;
 

@@ -25,6 +25,10 @@ public:
 private:
     const uint TEXT_MARGIN = 20;
     static constexpr uint ALIEN_FIRE_INTERVAL_FRAMES = (uint)(0.5f * 60);
+    static constexpr float LEVEL_CLEAR_PAUSE_SECONDS = 2.0;
+    static const uint LEVEL_CLEAR_PAUSE_FRAMES = (uint)(LEVEL_CLEAR_PAUSE_SECONDS * 60);
+    static const int ALIEN_LEVEL_OFFSET_STEP = 10;
+    static const int ALIEN_LEVEL_OFFSET_MAX = 30;
 
     Game* game;
     Input* input;
@@ -41,6 +45,9 @@ private:
     Ufo* ufo;
     uint ufo_spawn_countdown;
     Direction ufo_next_direction;
+
+    bool is_level_clearing;
+    uint level_clear_countdown;
 
     void create_aliens();
     void update_ufo();

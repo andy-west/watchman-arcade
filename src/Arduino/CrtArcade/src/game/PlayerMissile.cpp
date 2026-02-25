@@ -53,6 +53,10 @@ void PlayerMissile::deactivate() {
     explosion->is_visible = false;
 }
 
+void PlayerMissile::update_explosion() {
+    explosion->update();
+}
+
 void PlayerMissile::destroy_alien_if_hit() {
     for (int i = 0; i < GameConstants::ALIEN_COUNT; i++) {
         Alien* alien = aliens[i];
@@ -83,6 +87,10 @@ bool PlayerMissile::check_shield_hit() {
     }
 
     return false;
+}
+
+bool PlayerMissile::is_explosion_visible() const {
+    return explosion->is_visible;
 }
 
 void PlayerMissile::draw() {

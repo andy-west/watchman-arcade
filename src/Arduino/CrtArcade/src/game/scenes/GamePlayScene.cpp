@@ -36,6 +36,9 @@ void GamePlayScene::reset_level() {
     ufo_spawn_countdown = Ufo::SPAWN_INTERVAL_FRAMES;
     ufo_next_direction = Direction::LEFT;
 
+    is_level_clearing = false;
+    level_clear_countdown = 0;
+
     alien_fire_countdown = (uint)(0.5f * 60);
     last_firing_alien_index = -1;
 
@@ -50,6 +53,11 @@ void GamePlayScene::reset_level() {
 void GamePlayScene::create_aliens() {
     int i = 0;
 
+    int level_offset = ((int)game->level_number - 1) * ALIEN_LEVEL_OFFSET_STEP;
+    if (level_offset > ALIEN_LEVEL_OFFSET_MAX) {
+        level_offset = ALIEN_LEVEL_OFFSET_MAX;
+    }
+
     for (int y = 0; y < GameConstants::ALIEN_ROWS; y++) {
         uint points = (GameConstants::ALIEN_ROWS - y) * 10;
 
@@ -60,7 +68,7 @@ void GamePlayScene::create_aliens() {
 
             aliens[i] = {
                 new Alien(x * Alien::SPACING + Alien::MARGIN_SIDE,
-                    y * Alien::SPACING + Alien::MARGIN_TOP,
+                    y * Alien::SPACING + Alien::MARGIN_TOP + level_offset,
                     y / 2,  // sprite_index
                     true,   // exists
                     points,
@@ -94,12 +102,20 @@ void GamePlayScene::create_shields() {
         VideoConstants::SCREEN_WIDTH - SpriteData::SHIELD_WIDTH - Shield::MARGIN_SIDE
     };
 
+    int level_offset = ((int)game->level_number - 1) * ALIEN_LEVEL_OFFSET_STEP;
+    if (level_offset > ALIEN_LEVEL_OFFSET_MAX) {
+        level_offset = ALIEN_LEVEL_OFFSET_MAX;
+    }
+
+    int bottom_alien_y = (GameConstants::ALIEN_ROWS - 1) * Alien::SPACING + Alien::MARGIN_TOP + level_offset;
+    bool shields_exist = (bottom_alien_y + (int)SpriteData::ALIEN_HEIGHT < (int)Shield::Y);
+
     for (int i = 0; i < GameConstants::SHIELD_COUNT; i++) {
         if (shields[i] != nullptr) {
             delete shields[i];
         }
 
-        shields[i] = new Shield(shield_positions[i], Shield::Y, true, graphics);
+        shields[i] = new Shield(shield_positions[i], Shield::Y, shields_exist, graphics);
     }
 }
 
@@ -109,6 +125,23 @@ void GamePlayScene::update() {
 
         if (game->game_ending_countdown <= 0) {
             game->current_state = GameState::GAME_OVER;
+        }
+    }
+    else if (is_level_clearing) {
+        update_ufo();
+        player->get_missile()->update_explosion();
+
+        if (level_clear_countdown > 0) {
+            level_clear_countdown--;
+
+            if (level_clear_countdown <= 0) {
+                is_level_clearing = false;
+                game->reset_level(game->level_number + 1);
+                game->current_state = GameState::LEVEL_START;
+            }
+        }
+        else if (!player->get_missile()->is_explosion_visible()) {
+            level_clear_countdown = LEVEL_CLEAR_PAUSE_FRAMES;
         }
     }
     else {
@@ -131,6 +164,18 @@ void GamePlayScene::update() {
 
         update_aliens();
         update_alien_missiles();
+
+        if (get_remaining_alien_count() == 0) {
+            is_level_clearing = true;
+            level_clear_countdown = 0;
+
+            for (uint i = 0; i < AlienMissile::MAX_ACTIVE; i++) {
+                if (alien_missiles[i] != nullptr) {
+                    alien_missiles[i]->is_active = false;
+                    alien_missiles[i]->source_alien_index = -1;
+                }
+            }
+        }
     }
 }
 

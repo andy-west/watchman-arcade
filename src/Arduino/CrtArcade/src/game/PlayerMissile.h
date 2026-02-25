@@ -23,8 +23,10 @@ public:
     PlayerMissile(Player* player, Alien* aliens[], Shield* shields[], Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data);
     void set_ufo(Ufo* ufo);
     void update();
+    void update_explosion();
     void draw();
     void deactivate();
+    bool is_explosion_visible() const;
 
 private:
     const uint SPEED = 2;

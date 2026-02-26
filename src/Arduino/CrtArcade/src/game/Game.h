@@ -17,6 +17,7 @@ public:
     GameState current_state = GameState::TITLE_SCREEN;
     uint level_number;
     uint score;
+    uint high_score;
     uint lives;
     bool is_game_ending;
     uint game_ending_countdown;
@@ -32,6 +33,7 @@ public:
     void add_score(uint points);
 
 private:
+    static const uint MAX_LIVES = 9;
     static const uint EXTRA_LIFE_INTERVAL = 10000;
     static constexpr float GAME_ENDING_SECONDS = 3.0;
     static const uint GAME_ENDING_TIME = GAME_ENDING_SECONDS * 60;

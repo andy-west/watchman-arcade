@@ -8,6 +8,7 @@
 Game::Game(Graphics* graphics) {
     this->graphics = graphics;
 
+    high_score = 5000;
     input = new Input();
     sprite_data = new SpriteData();
     level_start_scene = new LevelStartScene(this, graphics);
@@ -58,7 +59,7 @@ void Game::add_score(uint points) {
     uint old_score = score;
     score += points;
 
-    if (score / EXTRA_LIFE_INTERVAL > old_score / EXTRA_LIFE_INTERVAL) {
+    if (score / EXTRA_LIFE_INTERVAL > old_score / EXTRA_LIFE_INTERVAL && lives < MAX_LIVES) {
         lives++;
     }
 }

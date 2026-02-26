@@ -66,6 +66,7 @@ private:
     void move_aliens_down();
     void draw_status();
     void draw_score();
+    void draw_high_score();
     void draw_lives();
     void draw_aliens();
     void draw_shields();

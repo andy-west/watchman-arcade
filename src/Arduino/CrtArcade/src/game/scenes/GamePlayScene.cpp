@@ -21,7 +21,6 @@ GamePlayScene::GamePlayScene(Game* game, Input* input, Graphics* graphics, Sprit
     player = new Player(game, input, graphics, sprite_data, aliens, shields);
     ufo = new Ufo(player->get_missile(), game, graphics, sprite_data);
     player->get_missile()->set_ufo(ufo);
-    ufo_next_direction = Direction::LEFT;
 }
 
 void GamePlayScene::reset_level() {
@@ -34,7 +33,7 @@ void GamePlayScene::reset_level() {
 
     ufo->is_active = false;
     ufo_spawn_countdown = Ufo::SPAWN_INTERVAL_FRAMES;
-    ufo_next_direction = Direction::LEFT;
+    ufo_next_direction = Direction::RIGHT;
 
     is_level_clearing = false;
     level_clear_countdown = 0;
@@ -125,6 +124,7 @@ void GamePlayScene::update() {
 
         if (game->game_ending_countdown <= 0) {
             game->current_state = GameState::GAME_OVER;
+            game->high_score = max(game->score, game->high_score);
         }
     }
     else if (is_level_clearing) {
@@ -397,33 +397,52 @@ void GamePlayScene::draw_status() {
     }
 
     draw_score();
+    draw_high_score();
     draw_lives();
 }
 
 void GamePlayScene::draw_score() {
-    const uint SCORE_LABEL_CHARACTERS = 6;
     const uint SCORE_DIGITS = 6;
 
-    graphics->draw_text("SCORE ", TEXT_MARGIN, TEXT_MARGIN);
+    graphics->draw_text("SCORE", TEXT_MARGIN, TEXT_MARGIN);
+
     char score_string[SCORE_DIGITS + 1];
     sprintf(score_string, "%0*d", SCORE_DIGITS, game->score);
-    graphics->draw_text(score_string,
-        TEXT_MARGIN + (SCORE_LABEL_CHARACTERS * GlobalConstants::FONT_WIDTH),
-        TEXT_MARGIN);
+
+    graphics->draw_text(score_string, TEXT_MARGIN, TEXT_MARGIN + GlobalConstants::FONT_HEIGHT);
+}
+
+void GamePlayScene::draw_high_score() {
+    const uint HIGH_SCORE_LABEL_CHARACTERS = 7;
+    const uint HIGH_SCORE_DIGITS = 6;
+
+    uint high_score_x = VideoConstants::SCREEN_WIDTH / 2 -
+        (HIGH_SCORE_LABEL_CHARACTERS * GlobalConstants::FONT_WIDTH) / 2;
+
+    graphics->draw_text("HISCORE", high_score_x, TEXT_MARGIN);
+
+    char high_score_string[HIGH_SCORE_DIGITS + 1];
+    sprintf(high_score_string, "%0*d", HIGH_SCORE_DIGITS, game->high_score);
+
+    graphics->draw_text(high_score_string, high_score_x, TEXT_MARGIN + GlobalConstants::FONT_HEIGHT);
 }
 
 void GamePlayScene::draw_lives() {
-    const uint LIVES_LABEL_CHARACTERS = 6;
+    const uint LIVES_LABEL_CHARACTERS = 5;
     const uint LIVES_DIGITS = 1;
 
-    uint lives_text_x = VideoConstants::SCREEN_WIDTH - TEXT_MARGIN -
-        ((LIVES_LABEL_CHARACTERS + LIVES_DIGITS) * GlobalConstants::FONT_WIDTH);
-    graphics->draw_text("LIVES ", lives_text_x, TEXT_MARGIN);
+    uint lives_label_x = VideoConstants::SCREEN_WIDTH - TEXT_MARGIN -
+        (LIVES_LABEL_CHARACTERS * GlobalConstants::FONT_WIDTH);
+
+    graphics->draw_text("LIVES", lives_label_x, TEXT_MARGIN);
+
     char lives_string[LIVES_DIGITS + 1];
     itoa(game->lives, lives_string, 10);
-    graphics->draw_text(lives_string,
-        lives_text_x + (LIVES_LABEL_CHARACTERS * GlobalConstants::FONT_WIDTH),
-        TEXT_MARGIN);
+    uint lives_string_x = lives_label_x +
+        (LIVES_LABEL_CHARACTERS * GlobalConstants::FONT_WIDTH -
+        LIVES_DIGITS * GlobalConstants::FONT_WIDTH);
+
+    graphics->draw_text(lives_string, lives_string_x, TEXT_MARGIN + GlobalConstants::FONT_HEIGHT);
 }
 
 void GamePlayScene::draw_aliens() {

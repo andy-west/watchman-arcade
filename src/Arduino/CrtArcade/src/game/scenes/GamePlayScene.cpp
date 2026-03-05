@@ -424,7 +424,9 @@ void GamePlayScene::draw_high_score() {
     char high_score_string[HIGH_SCORE_DIGITS + 1];
     sprintf(high_score_string, "%0*d", HIGH_SCORE_DIGITS, game->high_score);
 
-    graphics->draw_text(high_score_string, high_score_x, TEXT_MARGIN + GlobalConstants::FONT_HEIGHT);
+    graphics->draw_text(high_score_string,
+        high_score_x + (HIGH_SCORE_LABEL_CHARACTERS * GlobalConstants::FONT_WIDTH - HIGH_SCORE_DIGITS * GlobalConstants::FONT_WIDTH),
+        TEXT_MARGIN + GlobalConstants::FONT_HEIGHT);
 }
 
 void GamePlayScene::draw_lives() {

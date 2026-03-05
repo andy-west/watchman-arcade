@@ -57,11 +57,13 @@ void Audio::update() {
 
     process_command();
 
-    int mix = 0;
+    float mix = 0.0f;
 
     for (uint i = 0; i < AudioConstants::CHANNEL_COUNT; i++) {
         if (channels[i].is_active) {
-            mix += (int)channels[i].data[channels[i].position] - 128;
+            float sample = (float)channels[i].data[channels[i].position] - 128.0f;
+            sample *= channels[i].volume / 255.0f;
+            mix += sample;
             channels[i].position++;
 
             if (channels[i].position >= channels[i].size) {
@@ -70,13 +72,13 @@ void Audio::update() {
         }
     }
 
-    mix += 128;
+    mix += 128.0f;
 
-    if (mix < 0) {
-        mix = 0;
+    if (mix < 0.0f) {
+        mix = 0.0f;
     }
-    else if (mix > 255) {
-        mix = 255;
+    else if (mix > 255.0f) {
+        mix = 255.0f;
     }
 
     next_sample = (byte)mix;
@@ -106,6 +108,7 @@ void Audio::process_command() {
         channels[channel].data = sound_data->sounds[sound_index];
         channels[channel].size = sound_data->sound_sizes[sound_index];
         channels[channel].position = 0;
+        channels[channel].volume = pending_command.volume;
         channels[channel].is_active = true;
     }
     else if (type == AudioCommandType::STOP) {
@@ -113,9 +116,10 @@ void Audio::process_command() {
     }
 }
 
-void Audio::play(SoundEffect effect, byte channel) {
+void Audio::play(SoundEffect effect, byte channel, byte volume) {
     pending_command.sound_index = (byte)effect;
     pending_command.channel = channel;
+    pending_command.volume = volume;
     __dmb();
     pending_command.type = AudioCommandType::PLAY;
 }

@@ -11,7 +11,7 @@ public:
     Audio();
     void update();
 
-    static void play(SoundEffect effect, byte channel);
+    static void play(SoundEffect effect, byte channel, byte volume = 255);
     static void stop(byte channel);
 
 private:
@@ -20,6 +20,7 @@ private:
         uint size = 0;
         uint position = 0;
         bool is_active = false;
+        byte volume = 255;
     };
 
     SoundData* sound_data;

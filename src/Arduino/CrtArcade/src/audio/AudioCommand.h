@@ -11,6 +11,7 @@ struct AudioCommand {
     AudioCommandType type = AudioCommandType::NONE;
     byte sound_index = 0;
     byte channel = 0;
+    byte volume = 255;
 };
 
 #endif

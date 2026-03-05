@@ -45,7 +45,7 @@ void PlayerMissile::update() {
         x = player->x + (SpriteData::PLAYER_WIDTH / 2);
         y = Player::Y - SpriteData::PLAYER_MISSILE_HEIGHT;
         is_active = true;
-        Audio::play(SoundEffect::MISSILE, 0);
+        Audio::play(SoundEffect::MISSILE, 0, 128);
     }
 
     explosion->update();

@@ -6,6 +6,8 @@
 #include "Game.h"
 #include "Explosion.h"
 #include "Ufo.h"
+#include "SoundEffect.h"
+#include "../audio/Audio.h"
 
 PlayerMissile::PlayerMissile(Player* player, Alien* aliens[], Shield* shields[], Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data) {
     this->player = player;
@@ -43,6 +45,7 @@ void PlayerMissile::update() {
         x = player->x + (SpriteData::PLAYER_WIDTH / 2);
         y = Player::Y - SpriteData::PLAYER_MISSILE_HEIGHT;
         is_active = true;
+        Audio::play(SoundEffect::MISSILE, 0);
     }
 
     explosion->update();
@@ -69,6 +72,7 @@ void PlayerMissile::destroy_alien_if_hit() {
                     game->add_score(alien->points);
                     is_active = false;
                     explosion->show(alien->x, alien->y);
+                    Audio::play(SoundEffect::EXPLOSION, 1);
                     break;
             }
         }

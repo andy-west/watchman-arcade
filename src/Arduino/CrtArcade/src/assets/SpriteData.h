@@ -11,16 +11,16 @@ public:
     static const byte SHIELD_HEIGHT = 16;
     static const byte SHIELD_DAMAGE_WIDTH = 5;
     static const byte SHIELD_DAMAGE_HEIGHT = 5;
-    static const uint PLAYER_WIDTH = 13;
-    static const uint PLAYER_HEIGHT = 8;
-    static const uint PLAYER_MISSILE_WIDTH = 1;
-    static const uint PLAYER_MISSILE_HEIGHT = 7;
-    static const uint ALIEN_MISSILE_WIDTH = 3;
-    static const uint ALIEN_MISSILE_HEIGHT = 7;
-    static const uint EXPLOSION_WIDTH = 12;
-    static const uint EXPLOSION_HEIGHT = 8;
-    static const uint UFO_WIDTH = 14;
-    static const uint UFO_HEIGHT = 7;
+    static const byte PLAYER_WIDTH = 13;
+    static const byte PLAYER_HEIGHT = 8;
+    static const byte PLAYER_MISSILE_WIDTH = 1;
+    static const byte PLAYER_MISSILE_HEIGHT = 7;
+    static const byte ALIEN_MISSILE_WIDTH = 3;
+    static const byte ALIEN_MISSILE_HEIGHT = 7;
+    static const byte EXPLOSION_WIDTH = 12;
+    static const byte EXPLOSION_HEIGHT = 8;
+    static const byte UFO_WIDTH = 14;
+    static const byte UFO_HEIGHT = 7;
 
     byte* aliens[3][2] = {
         { alien_a_0, alien_a_1 },

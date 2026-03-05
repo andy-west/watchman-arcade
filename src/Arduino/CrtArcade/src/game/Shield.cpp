@@ -1,5 +1,4 @@
 #include <arduino.h>
-#include <arduino.h>
 #include "Shield.h"
 #include "GameConstants.h"
 

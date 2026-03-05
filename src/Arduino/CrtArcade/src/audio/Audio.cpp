@@ -57,14 +57,12 @@ void Audio::update() {
 
     process_command();
 
-    uint mix = 0;
-    uint active_count = 0;
+    int mix = 0;
 
     for (uint i = 0; i < AudioConstants::CHANNEL_COUNT; i++) {
         if (channels[i].is_active) {
-            mix += channels[i].data[channels[i].position];
+            mix += (int)channels[i].data[channels[i].position] - 128;
             channels[i].position++;
-            active_count++;
 
             if (channels[i].position >= channels[i].size) {
                 channels[i].is_active = false;
@@ -72,12 +70,16 @@ void Audio::update() {
         }
     }
 
-    if (active_count > 0) {
-        next_sample = mix / active_count;
+    mix += 128;
+
+    if (mix < 0) {
+        mix = 0;
     }
-    else {
-        next_sample = 128;
+    else if (mix > 255) {
+        mix = 255;
     }
+
+    next_sample = (byte)mix;
 }
 
 void Audio::process_command() {

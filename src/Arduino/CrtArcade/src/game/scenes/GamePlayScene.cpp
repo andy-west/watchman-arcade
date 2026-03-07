@@ -122,9 +122,12 @@ void GamePlayScene::create_shields() {
 
 void GamePlayScene::update() {
     if (game->is_game_ending) {
+        update_ufo();
+
         game->game_ending_countdown--;
 
         if (game->game_ending_countdown <= 0) {
+            Audio::stop_all();
             game->current_state = GameState::GAME_OVER;
             game->high_score = max(game->score, game->high_score);
         }
@@ -137,6 +140,7 @@ void GamePlayScene::update() {
             level_clear_countdown--;
 
             if (level_clear_countdown <= 0) {
+                Audio::stop_all();
                 is_level_clearing = false;
                 game->reset_level(game->level_number + 1);
                 game->current_state = GameState::LEVEL_START;

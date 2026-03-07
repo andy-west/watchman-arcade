@@ -131,3 +131,9 @@ void Audio::stop(byte channel) {
     cmd.channel = channel;
     command_queue.enqueue(cmd);
 }
+
+void Audio::stop_all() {
+    for (uint i = 0; i < AudioConstants::CHANNEL_COUNT; i++) {
+        stop(i);
+    }
+}

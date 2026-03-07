@@ -13,6 +13,7 @@ public:
 
     static void play(SoundEffect effect, byte channel, byte volume = 128, bool loop = false);
     static void stop(byte channel);
+    static void stop_all();
 
 private:
     struct Channel {

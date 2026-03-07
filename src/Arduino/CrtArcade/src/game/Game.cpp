@@ -2,6 +2,8 @@
 #include "Game.h"
 #include "GameConstants.h"
 #include "scenes/GamePlayScene.h"
+#include "SoundEffect.h"
+#include "../audio/Audio.h"
 #include "../GlobalConstants.h"
 #include "../video/VideoConstants.h"
 
@@ -61,5 +63,6 @@ void Game::add_score(uint points) {
 
     if (score / EXTRA_LIFE_INTERVAL > old_score / EXTRA_LIFE_INTERVAL && lives < MAX_LIVES) {
         lives++;
+        Audio::play(SoundEffect::EXTRA_LIFE, 4);
     }
 }

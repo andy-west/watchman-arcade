@@ -1,6 +1,8 @@
 #include <arduino.h>
 #include "Player.h"
 #include "Game.h"
+#include "SoundEffect.h"
+#include "../audio/Audio.h"
 #include "../video/VideoConstants.h"
 
 Player::Player(Game* game, Input* input, Graphics* graphics, SpriteData* sprite_data, Alien* aliens[], Shield* shields[]) {
@@ -135,4 +137,5 @@ void Player::on_hit() {
     game->lives--;
     is_hit_animating = true;
     hit_countdown = (uint)(1.0f * 60);
+    Audio::play(SoundEffect::LOSE, 0);
 }

@@ -2,8 +2,13 @@
 #define SOUND_EFFECT_H
 
 enum class SoundEffect {
+    ALIEN_HIT,
+    ALIEN_STEP,
+    EXTRA_LIFE,
+    LOSE,
     MISSILE,
-    EXPLOSION
+    UFO,
+    UFO_HIT
 };
 
 #endif

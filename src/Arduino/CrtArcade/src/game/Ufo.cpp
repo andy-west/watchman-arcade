@@ -2,6 +2,8 @@
 #include "Ufo.h"
 #include "PlayerMissile.h"
 #include "Game.h"
+#include "SoundEffect.h"
+#include "../audio/Audio.h"
 #include "../video/VideoConstants.h"
 
 Ufo::Ufo(PlayerMissile* player_missile, Game* game, Graphics* graphics, SpriteData* sprite_data) {
@@ -73,6 +75,7 @@ void Ufo::check_missile_hit() {
         game->add_score(POINTS);
         player_missile->deactivate();
         explosion->show((int)x + (SpriteData::UFO_WIDTH / 2) - (SpriteData::EXPLOSION_WIDTH / 2), Y);
+        Audio::play(SoundEffect::UFO_HIT, 3);
         deactivate();
     }
 }

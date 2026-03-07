@@ -1,6 +1,8 @@
 #include <arduino.h>
 #include "Alien.h"
 #include "GameConstants.h"
+#include "SoundEffect.h"
+#include "../audio/Audio.h"
 #include "../video/VideoConstants.h"
 
 uint Alien::animation_frame = 0;
@@ -50,6 +52,7 @@ void Alien::move_down(Shield* shields[]) {
 
         // Game ends if aliens reach bottom.
         if (y >= MAX_Y) {
+            Audio::play(SoundEffect::LOSE, 0);
             game->end();
         }
     }

@@ -11,7 +11,7 @@ public:
     Audio();
     void update();
 
-    static void play(SoundEffect effect, byte channel, byte volume = 255);
+    static void play(SoundEffect effect, byte channel, byte volume = 128);
     static void stop(byte channel);
 
 private:

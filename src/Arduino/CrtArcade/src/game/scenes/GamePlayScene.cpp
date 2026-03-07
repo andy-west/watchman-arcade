@@ -6,6 +6,8 @@
 #include "../AlienMissile.h"
 #include "../Ufo.h"
 #include "../GameConstants.h"
+#include "../SoundEffect.h"
+#include "../../audio/Audio.h"
 #include "../../video/VideoConstants.h"
 #include "../../GlobalConstants.h"
 
@@ -317,6 +319,7 @@ void GamePlayScene::update_aliens() {
         Alien::animation_countdown += get_alien_animation_time();
         Alien::animation_frame = 1 - Alien::animation_frame;
         move_aliens();
+        Audio::play(SoundEffect::ALIEN_STEP, 2);
     }
 }
 

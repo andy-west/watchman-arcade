@@ -11,7 +11,7 @@ public:
     Audio();
     void update();
 
-    static void play(SoundEffect effect, byte channel, byte volume = 128);
+    static void play(SoundEffect effect, byte channel, byte volume = 128, bool loop = false);
     static void stop(byte channel);
 
 private:
@@ -21,12 +21,13 @@ private:
         uint position = 0;
         bool is_active = false;
         byte volume = 255;
+        bool loop = false;
     };
 
     SoundData* sound_data;
     Channel channels[AudioConstants::CHANNEL_COUNT];
 
-    void process_command();
+    void process_commands();
     void setup_pwm();
     void setup_timer();
 };

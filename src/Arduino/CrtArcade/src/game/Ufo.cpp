@@ -60,6 +60,7 @@ void Ufo::launch(Direction direction) {
     }
 
     is_active = true;
+    Audio::play(SoundEffect::UFO, 3, 128, true);
 }
 
 void Ufo::check_missile_hit() {
@@ -75,13 +76,14 @@ void Ufo::check_missile_hit() {
         game->add_score(POINTS);
         player_missile->deactivate();
         explosion->show((int)x + (SpriteData::UFO_WIDTH / 2) - (SpriteData::EXPLOSION_WIDTH / 2), Y);
-        Audio::play(SoundEffect::UFO_HIT, 3);
         deactivate();
+        Audio::play(SoundEffect::UFO_HIT, 3);
     }
 }
 
 void Ufo::deactivate() {
     is_active = false;
+    Audio::stop(3);
 }
 
 bool Ufo::is_explosion_visible() const {

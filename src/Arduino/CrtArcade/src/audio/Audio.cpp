@@ -5,7 +5,7 @@
 #include "Audio.h"
 #include "../game/SoundEffect.h"
 
-static volatile AudioCommand pending_command;
+static CommandQueue command_queue;
 static Audio* audio_instance = nullptr;
 
 static volatile bool sample_ready = false;
@@ -55,7 +55,7 @@ void Audio::update() {
 
     sample_ready = false;
 
-    process_command();
+    process_commands();
 
     float mix = 0.0f;
 
@@ -67,7 +67,12 @@ void Audio::update() {
             channels[i].position++;
 
             if (channels[i].position >= channels[i].size) {
-                channels[i].is_active = false;
+                if (channels[i].loop) {
+                    channels[i].position = 0;
+                }
+                else {
+                    channels[i].is_active = false;
+                }
             }
         }
     }
@@ -84,48 +89,45 @@ void Audio::update() {
     next_sample = (byte)mix;
 }
 
-void Audio::process_command() {
-    AudioCommandType type = pending_command.type;
+void Audio::process_commands() {
+    AudioCommand cmd;
 
-    if (type == AudioCommandType::NONE) {
-        return;
-    }
-
-    byte channel = pending_command.channel;
-    byte sound_index = pending_command.sound_index;
-
-    pending_command.type = AudioCommandType::NONE;
-
-    if (channel >= AudioConstants::CHANNEL_COUNT) {
-        return;
-    }
-
-    if (type == AudioCommandType::PLAY) {
-        if (sound_index >= SoundData::SOUND_COUNT) {
-            return;
+    while (command_queue.dequeue(cmd)) {
+        if (cmd.channel >= AudioConstants::CHANNEL_COUNT) {
+            continue;
         }
 
-        channels[channel].data = sound_data->sounds[sound_index];
-        channels[channel].size = sound_data->sound_sizes[sound_index];
-        channels[channel].position = 0;
-        channels[channel].volume = pending_command.volume;
-        channels[channel].is_active = true;
-    }
-    else if (type == AudioCommandType::STOP) {
-        channels[channel].is_active = false;
+        if (cmd.type == AudioCommandType::PLAY) {
+            if (cmd.sound_index >= SoundData::SOUND_COUNT) {
+                continue;
+            }
+
+            channels[cmd.channel].data = sound_data->sounds[cmd.sound_index];
+            channels[cmd.channel].size = sound_data->sound_sizes[cmd.sound_index];
+            channels[cmd.channel].position = 0;
+            channels[cmd.channel].volume = cmd.volume;
+            channels[cmd.channel].loop = cmd.loop;
+            channels[cmd.channel].is_active = true;
+        }
+        else if (cmd.type == AudioCommandType::STOP) {
+            channels[cmd.channel].is_active = false;
+        }
     }
 }
 
-void Audio::play(SoundEffect effect, byte channel, byte volume) {
-    pending_command.sound_index = (byte)effect;
-    pending_command.channel = channel;
-    pending_command.volume = volume;
-    __dmb();
-    pending_command.type = AudioCommandType::PLAY;
+void Audio::play(SoundEffect effect, byte channel, byte volume, bool loop) {
+    AudioCommand cmd;
+    cmd.type = AudioCommandType::PLAY;
+    cmd.sound_index = (byte)effect;
+    cmd.channel = channel;
+    cmd.volume = volume;
+    cmd.loop = loop;
+    command_queue.enqueue(cmd);
 }
 
 void Audio::stop(byte channel) {
-    pending_command.channel = channel;
-    __dmb();
-    pending_command.type = AudioCommandType::STOP;
+    AudioCommand cmd;
+    cmd.type = AudioCommandType::STOP;
+    cmd.channel = channel;
+    command_queue.enqueue(cmd);
 }

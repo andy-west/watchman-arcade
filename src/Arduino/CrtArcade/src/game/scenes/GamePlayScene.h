@@ -60,9 +60,9 @@ private:
     int get_alien_above_player();
     int choose_random_shooter(int avoid_alien_index);
     void update_aliens();
-    uint get_alien_animation_time();
+    uint get_alien_animation_time(uint remaining_aliens);
     uint get_remaining_alien_count();
-    void move_aliens();
+    void move_aliens(uint speed);
     void move_aliens_down();
     void draw_status();
     void draw_score();

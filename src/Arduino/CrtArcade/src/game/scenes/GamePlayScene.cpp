@@ -82,7 +82,7 @@ void GamePlayScene::create_aliens() {
     }
 
     Alien::animation_frame = 0;
-    Alien::animation_countdown = get_alien_animation_time();
+    Alien::animation_countdown = get_alien_animation_time(GameConstants::ALIEN_COUNT);
     Alien::direction = Direction::RIGHT;
 }
 
@@ -320,19 +320,50 @@ void GamePlayScene::update_aliens() {
     Alien::animation_countdown--;
 
     if (Alien::animation_countdown <= 0) {
-        Alien::animation_countdown += get_alien_animation_time();
+        uint remaining_aliens = get_remaining_alien_count();
+        uint frame_time = get_alien_animation_time(remaining_aliens);
+        Alien::animation_countdown += frame_time;
         Alien::animation_frame = 1 - Alien::animation_frame;
-        move_aliens();
+
+        uint speed = Alien::MOVE_SPEED;
+
+        // The last several aliens take larger steps.
+        if (remaining_aliens < 5) {
+            speed += 5 - remaining_aliens;
+        }
+
+        move_aliens(speed);
+
         Audio::play(SoundEffect::ALIEN_STEP, 2);
     }
 }
 
-uint GamePlayScene::get_alien_animation_time() {
-    uint remaining = get_remaining_alien_count();
-    uint time = (Alien::ANIMATION_TIME * remaining) / GameConstants::ALIEN_COUNT;
+uint GamePlayScene::get_alien_animation_time(uint remaining_aliens) {
+    uint time = (Alien::ANIMATION_TIME * remaining_aliens) / GameConstants::ALIEN_COUNT;
 
-    if (time < 1) {
-        time = 1;
+    if (remaining_aliens == 1) {
+        time = Alien::ANIMATION_TIME / 10;
+    }
+    else if (remaining_aliens == 2) {
+        time = Alien::ANIMATION_TIME / 8;
+    }
+    else if (remaining_aliens < GameConstants::ALIEN_COUNT / 6.0) {
+        time = Alien::ANIMATION_TIME / 6;
+    }
+    else if (remaining_aliens < GameConstants::ALIEN_COUNT / 3.0) {
+        time = Alien::ANIMATION_TIME / 3;
+    }
+    else if (remaining_aliens < GameConstants::ALIEN_COUNT / 2.0) {
+        time = Alien::ANIMATION_TIME / 2;
+    }
+    else if (remaining_aliens < GameConstants::ALIEN_COUNT / 1.5) {
+        time = Alien::ANIMATION_TIME / 1.5;
+    }
+    else if (remaining_aliens < GameConstants::ALIEN_COUNT / 1.2) {
+        time = Alien::ANIMATION_TIME / 1.2;
+    }
+    else {
+        time = Alien::ANIMATION_TIME;
     }
 
     return time;
@@ -350,11 +381,11 @@ uint GamePlayScene::get_remaining_alien_count() {
     return remaining;
 }
 
-void GamePlayScene::move_aliens() {
+void GamePlayScene::move_aliens(uint speed) {
     Direction new_direction = Alien::direction;
 
     for (int i = 0; i < GameConstants::ALIEN_COUNT; i++) {
-        aliens[i]->move(new_direction);
+        aliens[i]->move(new_direction, speed);
     }
 
     if (new_direction != Alien::direction) {

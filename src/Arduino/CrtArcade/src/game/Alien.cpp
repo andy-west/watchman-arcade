@@ -20,17 +20,17 @@ Alien::Alien(int x, int y, int sprite_index, bool exists, uint points, Graphics*
     this->game = game;
 }
 
-void Alien::move(Direction &new_direction) {
+void Alien::move(Direction &new_direction, uint speed) {
     if (exists) {
         if (direction == Direction::RIGHT) {
-            x += MOVE_SPEED;
+            x += speed;
 
             if (x >= VideoConstants::SCREEN_WIDTH - SpriteData::ALIEN_WIDTH - MARGIN_SIDE) {
                 new_direction = Direction::LEFT;
             }
         }
         else {
-            x -= MOVE_SPEED;
+            x -= speed;
 
             if (x <= MARGIN_SIDE) {
                 new_direction = Direction::RIGHT;

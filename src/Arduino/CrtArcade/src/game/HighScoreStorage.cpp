@@ -1,6 +1,9 @@
 #include <arduino.h>
-#include <EEPROM.h>
 #include "HighScoreStorage.h"
+
+#ifdef SAVE_HIGH_SCORE
+
+#include <EEPROM.h>
 
 void HighScoreStorage::initialize() {
     EEPROM.begin(STORAGE_SIZE);
@@ -26,3 +29,17 @@ void HighScoreStorage::save(uint high_score) {
     EEPROM.put(HIGH_SCORE_ADDRESS, high_score);
     EEPROM.commit();
 }
+
+#else
+
+void HighScoreStorage::initialize() {
+}
+
+uint HighScoreStorage::load() {
+    return DEFAULT_HIGH_SCORE;
+}
+
+void HighScoreStorage::save(uint high_score) {
+}
+
+#endif

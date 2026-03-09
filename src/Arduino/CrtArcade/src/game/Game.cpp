@@ -3,6 +3,7 @@
 #include "GameConstants.h"
 #include "scenes/GamePlayScene.h"
 #include "SoundEffect.h"
+#include "HighScoreStorage.h"
 #include "../audio/Audio.h"
 #include "../GlobalConstants.h"
 #include "../video/VideoConstants.h"
@@ -10,7 +11,8 @@
 Game::Game(Graphics* graphics) {
     this->graphics = graphics;
 
-    high_score = 5000;
+    HighScoreStorage::initialize();
+    high_score = HighScoreStorage::load();
     input = new Input();
     sprite_data = new SpriteData();
     level_start_scene = new LevelStartScene(this, graphics);

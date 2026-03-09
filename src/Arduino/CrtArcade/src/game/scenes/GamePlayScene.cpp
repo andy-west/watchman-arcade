@@ -32,6 +32,7 @@ void GamePlayScene::reset_level() {
     create_shields();
 
     player->x = Player::BOUNDARY_SIDE;
+    player->deactivate_missile();
     game->is_game_ending = false;
 
     ufo->is_active = false;
@@ -123,6 +124,7 @@ void GamePlayScene::create_shields() {
 
 void GamePlayScene::update() {
     if (game->is_game_ending) {
+        player->deactivate_missile();
         update_ufo();
 
         game->game_ending_countdown--;

@@ -7,6 +7,7 @@
 #include "../Ufo.h"
 #include "../GameConstants.h"
 #include "../SoundEffect.h"
+#include "../HighScoreStorage.h"
 #include "../../audio/Audio.h"
 #include "../../video/VideoConstants.h"
 #include "../../GlobalConstants.h"
@@ -130,6 +131,10 @@ void GamePlayScene::update() {
             Audio::stop_all();
             game->current_state = GameState::GAME_OVER;
             game->high_score = max(game->score, game->high_score);
+
+            if (game->score > HighScoreStorage::load()) {
+                HighScoreStorage::save(game->score);
+            }
         }
     }
     else if (is_level_clearing) {
